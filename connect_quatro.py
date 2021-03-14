@@ -47,12 +47,31 @@ class Board:
         row = self.find_last_empty_cell(col)
         self.b[col][row] = team
     def check_win(self, users_last_column):
-        """Checks in all directions from the most recently placed piece to see if that was a game-winning move."""
+        """Checks in all directions from the most recently placed piece to see if that was a game-winning move.
+        Returns a list of coordinates of the winning streak or an empty list if no one won that round."""
         last_column = int(users_last_column) - 1    # users_last_column is a sanitized and legal string that can be cast into an integer
         most_recent_piece = (last_column, self.find_last_empty_cell(last_column)+1)   # The exact coordinates of the most recently placed piece
         potential_winner = self.b[most_recent_piece[0]][most_recent_piece[1]]
 
-        # TODO
+        horizontal_coords = []
+        vertical_coords = []
+        diagdown_coords = []
+        diagup_coords = []
+        for i in range(-3, 4):
+            if -1 < most_recent_piece[0] + i < self.bx:
+                horizontal_coords.append((most_recent_piece[0] + i, most_recent_piece[1]))
+            if -1 < most_recent_piece[1] + i < self.by:
+                vertical_coords.append((most_recent_piece[0], most_recent_piece[1] + i))
+            if -1 < most_recent_piece[0] + i < self.bx and -1 < most_recent_piece[1] + i < self.by:
+                diagdown_coords.append((most_recent_piece[0] + i, most_recent_piece[1] + i))
+            if -1 < most_recent_piece[0] + i < self.bx and -1 < most_recent_piece[1] - i < self.by:
+                diagup_coords.append((most_recent_piece[0] + i, most_recent_piece[1] - i))
+        print("Horizontal coords:   ", horizontal_coords)
+        print("Vertical coords:     ", vertical_coords)
+        print("Diagonal-down coords:", diagdown_coords)
+        print("Diagonal-up coords:  ", diagup_coords)
+
+        # TODO: parse list of coordinates for winning streaks
 
         return CHAR_BLANK
     def clear_board(self):
