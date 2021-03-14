@@ -48,9 +48,9 @@ class Board:
                 row += " "
             print(row)
         print()
-    def _find_last_empty_cell(self, column_index):
-        """Private function for locating the lowest available cell in a given column. Responsible for "gravity".
-        Inputs: column_index: an integer representing the column through which to check for an empty cell, pre-formatted to work with zero-based indexing."""
+    def _find_last_empty_row(self, column_index):
+        """Private function for locating the lowest available row in a given column. Responsible for "gravity".
+        Inputs: column_index: an integer representing the column through which to check, pre-formatted to work with zero-based indexing."""
         for i in range(self.by):
             if self.b[column_index][i] != CHAR_BLANK:
                 return i-1  # If a non-empty cell is encountered, return the index of the previous cell
@@ -61,14 +61,14 @@ class Board:
                 team: a string representing the user's game piece
         """
         col = int(user_input_column) - 1
-        row = self._find_last_empty_cell(col)
+        row = self._find_last_empty_row(col)
         self.b[col][row] = team
     def check_win(self, users_last_column):
         """Checks in all directions from the most recently placed piece to see if that was a game-winning move.
         Returns a list of coordinates of the winning streak or an empty list if no one won that round.
         Inputs: users_last_column: a string (pre-sanitized by sanitize_input()) that represents the column the user chose to place their piece"""
         last_column = int(users_last_column) - 1
-        most_recent_piece = (last_column, self._find_last_empty_cell(last_column)+1)   # A tuple of the exact coordinates of the most recently placed piece
+        most_recent_piece = (last_column, self._find_last_empty_row(last_column)+1)   # A tuple of the exact coordinates of the most recently placed piece
 
         # Lists to check for winning streaks:
         horizontal_coords = []
